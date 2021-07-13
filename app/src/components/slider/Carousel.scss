@@ -1,0 +1,43 @@
+.carousel {
+  display: flex;
+  position: relative;
+
+  &__container {
+    display: flex;
+    padding: 0 55px;
+    transition: transform 300ms ease 100ms;
+    z-index: 3;
+    width: 100%;
+  }
+
+  &:not(&--open) .movie-poster:hover .show-details-button {
+    opacity: 1;
+  }
+
+  &:not(&--open) .movie-poster:hover {
+    transform: scale(1.5) !important;
+  }
+
+  &:not(&--open):hover .movie-poster {
+    transform: translateX(-25%);
+  }
+
+  &:not(&--open) .movie-poster:hover ~ .movie-poster {
+    transform: translateX(25%);
+  }
+
+  &__heading {
+    font-size: 1.2em;
+    text-align: left;
+    position: relative;
+    text-transform: uppercase;
+    top: 100px;
+    padding: 0 55px;
+  }
+}
+
+.carousel-wrapper {
+  padding: 100px 0;
+  overflow: hidden;
+  position: relative;
+}

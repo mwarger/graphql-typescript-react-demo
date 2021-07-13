@@ -1,0 +1,27 @@
+{
+  "name": "now-playing-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Mat Warger <mwarger@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "app": "cd app && npm run start",
+    "api": "cd api && npm run start",
+    "start": "run-p app api",
+    "codegen": "graphql-codegen --config codegen.yml"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "1.17.8",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^3.9.7",
+    "@graphql-codegen/typescript": "1.17.8",
+    "@graphql-codegen/typescript-operations": "1.17.8",
+    "@graphql-codegen/typescript-resolvers": "1.17.8",
+    "@graphql-codegen/typescript-react-apollo": "1.17.8",
+    "@graphql-codegen/introspection": "1.17.8"
+  },
+  "dependencies": {
+    "apollo-datasource-rest": "^0.9.3",
+    "graphql": "^15.3.0"
+  }
+}
