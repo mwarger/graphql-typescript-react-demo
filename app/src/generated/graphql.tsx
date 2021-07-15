@@ -99,6 +99,15 @@ export type ToggleFavoriteMutation = (
   )> }
 );
 
+export type MovieFragmentFragment = (
+  { __typename?: 'Movie' }
+  & Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path' | 'backdrop_path' | 'favorite' | 'popularity'>
+  & { cast?: Maybe<Array<(
+    { __typename?: 'Credit' }
+    & Pick<Credit, 'name'>
+  )>> }
+);
+
 export type NowPlayingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -106,11 +115,7 @@ export type NowPlayingQuery = (
   { __typename?: 'Query' }
   & { nowPlaying?: Maybe<Array<(
     { __typename?: 'Movie' }
-    & Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path' | 'backdrop_path' | 'favorite' | 'popularity'>
-    & { cast?: Maybe<Array<(
-      { __typename?: 'Credit' }
-      & Pick<Credit, 'name'>
-    )>> }
+    & MovieFragmentFragment
   )>> }
 );
 
@@ -121,15 +126,24 @@ export type PopularQuery = (
   { __typename?: 'Query' }
   & { popular?: Maybe<Array<(
     { __typename?: 'Movie' }
-    & Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path' | 'backdrop_path' | 'favorite' | 'popularity'>
-    & { cast?: Maybe<Array<(
-      { __typename?: 'Credit' }
-      & Pick<Credit, 'name'>
-    )>> }
+    & MovieFragmentFragment
   )>> }
 );
 
-
+export const MovieFragmentFragmentDoc = gql`
+    fragment MovieFragment on Movie {
+  id
+  title
+  overview
+  poster_path
+  backdrop_path
+  favorite
+  popularity
+  cast {
+    name
+  }
+}
+    `;
 export const MovieByIdDocument = gql`
     query movieById($id: ID!) {
   movieById(id: $id) {
@@ -211,19 +225,10 @@ export type ToggleFavoriteMutationOptions = Apollo.BaseMutationOptions<ToggleFav
 export const NowPlayingDocument = gql`
     query nowPlaying {
   nowPlaying {
-    id
-    title
-    overview
-    poster_path
-    backdrop_path
-    favorite
-    popularity
-    cast {
-      name
-    }
+    ...MovieFragment
   }
 }
-    `;
+    ${MovieFragmentFragmentDoc}`;
 
 /**
  * __useNowPlayingQuery__
@@ -254,19 +259,10 @@ export type NowPlayingQueryResult = Apollo.QueryResult<NowPlayingQuery, NowPlayi
 export const PopularDocument = gql`
     query popular {
   popular {
-    id
-    title
-    overview
-    poster_path
-    backdrop_path
-    favorite
-    popularity
-    cast {
-      name
-    }
+    ...MovieFragment
   }
 }
-    `;
+    ${MovieFragmentFragmentDoc}`;
 
 /**
  * __usePopularQuery__
