@@ -4,10 +4,9 @@ import { CarouselContext } from './CarouselContext';
 
 import './MoviePoster.scss';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { Movie } from '../../generated/graphql';
 
 type MoviePosterProps = {
-  movie: Movie; // TODO: use the fragment type
+  movie: any; // TODO: use the fragment type
 };
 
 export function MoviePoster(props: MoviePosterProps) {
