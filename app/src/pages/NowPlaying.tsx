@@ -14,7 +14,6 @@ export const NowPlaying = () => {
   return (
     <Carousel title="Now Playing">
       {movies.map((movie) => (
-        // TODO: fix this type
         <MoviePoster movie={movie} key={movie.id} />
       ))}
     </Carousel>

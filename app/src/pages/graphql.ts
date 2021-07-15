@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-// TODO: create fragment
+// TODO: create fragment for movie object
 
 export const NOW_PLAYING = gql`
   query nowPlaying {
