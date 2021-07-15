@@ -11,6 +11,7 @@ const resolvers: {
 } = {
   Query: {
     // TODO: what possible resolvers exist?
+    hello: () => 'world',
 
     nowPlaying(_parent, _args, context, _info) {
       return context.dataSources.movieDataSource.nowPlaying();
