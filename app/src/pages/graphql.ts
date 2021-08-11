@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 
-// TODO: create fragment for movie object
 export const MOVIE_FRAGMENT = gql`
   fragment MovieFragment on Movie {
     id
