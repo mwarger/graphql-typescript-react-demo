@@ -1,5 +1,7 @@
 # graphql-typescript-react-demo
 
+This is used as the basis example for a talk/demo called Rock-Solid Component with GraphQL - slides here: https://slides.com/mathewwarger/rock-solid-components
+
 ## Usage and Codegen
 
 Run `yarn install` in the root as well as the `app` and `api` directories. Run `yarn api` to start the API (to actually run queries for data, you'll need a Movies Database API key). For codegen, you will not need to worry about it.
