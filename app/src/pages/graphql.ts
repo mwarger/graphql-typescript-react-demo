@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const MOVIE_FRAGMENT = gql`
-  fragment MovieFragment on Movie {
+  fragment Movie on Movie {
     id
     title
     overview
@@ -18,7 +18,7 @@ export const MOVIE_FRAGMENT = gql`
 export const NOW_PLAYING = gql`
   query nowPlaying {
     nowPlaying {
-      ...MovieFragment
+      ...Movie
     }
   }
   ${MOVIE_FRAGMENT}
@@ -27,7 +27,7 @@ export const NOW_PLAYING = gql`
 export const POPULAR = gql`
   query popular {
     popular {
-      ...MovieFragment
+      ...Movie
     }
   }
   ${MOVIE_FRAGMENT}

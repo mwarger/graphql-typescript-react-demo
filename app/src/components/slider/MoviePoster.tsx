@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import cx from 'classnames';
 import { CarouselContext } from './CarouselContext';
-import { MovieFragmentFragment } from '../../generated/graphql';
+import { MovieFragment } from '../../generated/graphql';
 
 import './MoviePoster.scss';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
 type MoviePosterProps = {
-  movie: MovieFragmentFragment; // TODO: use the fragment type
+  movie: MovieFragment; // TODO: use the fragment type
 };
 
 export function MoviePoster(props: MoviePosterProps) {

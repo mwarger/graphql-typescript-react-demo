@@ -99,7 +99,18 @@ export type ToggleFavoriteMutation = (
   )> }
 );
 
-export type MovieFragmentFragment = (
+export type NowPlayingQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NowPlayingQueryQuery = (
+  { __typename?: 'Query' }
+  & { nowPlaying?: Maybe<Array<(
+    { __typename?: 'Movie' }
+    & Pick<Movie, 'id' | 'title' | 'overview'>
+  )>> }
+);
+
+export type MovieFragment = (
   { __typename?: 'Movie' }
   & Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path' | 'backdrop_path' | 'favorite' | 'popularity'>
   & { cast?: Maybe<Array<(
@@ -115,7 +126,7 @@ export type NowPlayingQuery = (
   { __typename?: 'Query' }
   & { nowPlaying?: Maybe<Array<(
     { __typename?: 'Movie' }
-    & MovieFragmentFragment
+    & MovieFragment
   )>> }
 );
 
@@ -126,12 +137,12 @@ export type PopularQuery = (
   { __typename?: 'Query' }
   & { popular?: Maybe<Array<(
     { __typename?: 'Movie' }
-    & MovieFragmentFragment
+    & MovieFragment
   )>> }
 );
 
-export const MovieFragmentFragmentDoc = gql`
-    fragment MovieFragment on Movie {
+export const MovieFragmentDoc = gql`
+    fragment Movie on Movie {
   id
   title
   overview
@@ -222,13 +233,49 @@ export function useToggleFavoriteMutation(baseOptions?: Apollo.MutationHookOptio
 export type ToggleFavoriteMutationHookResult = ReturnType<typeof useToggleFavoriteMutation>;
 export type ToggleFavoriteMutationResult = Apollo.MutationResult<ToggleFavoriteMutation>;
 export type ToggleFavoriteMutationOptions = Apollo.BaseMutationOptions<ToggleFavoriteMutation, ToggleFavoriteMutationVariables>;
+export const NowPlayingQueryDocument = gql`
+    query nowPlayingQuery {
+  nowPlaying {
+    id
+    title
+    overview
+  }
+}
+    `;
+
+/**
+ * __useNowPlayingQueryQuery__
+ *
+ * To run a query within a React component, call `useNowPlayingQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNowPlayingQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNowPlayingQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNowPlayingQueryQuery(baseOptions?: Apollo.QueryHookOptions<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>(NowPlayingQueryDocument, options);
+      }
+export function useNowPlayingQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>(NowPlayingQueryDocument, options);
+        }
+export type NowPlayingQueryQueryHookResult = ReturnType<typeof useNowPlayingQueryQuery>;
+export type NowPlayingQueryLazyQueryHookResult = ReturnType<typeof useNowPlayingQueryLazyQuery>;
+export type NowPlayingQueryQueryResult = Apollo.QueryResult<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>;
 export const NowPlayingDocument = gql`
     query nowPlaying {
   nowPlaying {
-    ...MovieFragment
+    ...Movie
   }
 }
-    ${MovieFragmentFragmentDoc}`;
+    ${MovieFragmentDoc}`;
 
 /**
  * __useNowPlayingQuery__
@@ -259,10 +306,10 @@ export type NowPlayingQueryResult = Apollo.QueryResult<NowPlayingQuery, NowPlayi
 export const PopularDocument = gql`
     query popular {
   popular {
-    ...MovieFragment
+    ...Movie
   }
 }
-    ${MovieFragmentFragmentDoc}`;
+    ${MovieFragmentDoc}`;
 
 /**
  * __usePopularQuery__

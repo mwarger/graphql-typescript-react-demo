@@ -27,6 +27,7 @@ interface Movie {
   cast?: Credit[];
 }
 
+let favoriteMovies: string[] = [];
 class MovieDataSource extends RESTDataSource {
   apiKey: string = '';
   constructor() {
@@ -35,12 +36,21 @@ class MovieDataSource extends RESTDataSource {
     this.apiKey = String(process.env.TMDB_API_KEY);
   }
 
+  // array to save favorite movies
+
   async nowPlaying() {
     const response = await this.get(
       `movie/now_playing?api_key=${this.apiKey}&language=en-US&page=1`,
     );
 
-    return response.results || [];
+    const movies: Movie[] = response.results || [];
+
+    return (
+      movies.map((movie) => ({
+        ...movie,
+        favorite: favoriteMovies.includes(movie.id),
+      })) || []
+    );
   }
 
   async popular() {
@@ -48,18 +58,28 @@ class MovieDataSource extends RESTDataSource {
       `movie/popular?api_key=${this.apiKey}&language=en-US&page=1`,
     );
 
-    return response.results || [];
+    const movies: Movie[] = response.results || [];
+
+    return (
+      movies.map((movie) => ({
+        ...movie,
+        favorite: favoriteMovies.includes(movie.id),
+      })) || []
+    );
   }
 
-  async movieById(id: number) {
+  async movieById(id: string) {
     const response = await this.get(
       `movie/${id}?api_key=${this.apiKey}&language=en-US`,
     );
+    const movie: Movie = response;
+
+    movie.favorite = favoriteMovies.includes(id);
 
     return response;
   }
 
-  async getCredits(id: number) {
+  async getCredits(id: string) {
     const response = await this.get(
       `movie/${id}/credits?api_key=${this.apiKey}&language=en-US`,
     );
@@ -67,8 +87,22 @@ class MovieDataSource extends RESTDataSource {
     return response;
   }
 
-  toggleFavorite(id: number) {
-    // implement me
+  async toggleFavorite(id: string) {
+    const movie: Movie = await this.movieById(id);
+    if (favoriteMovies.includes(id)) {
+      console.log('setting favorite to false for id', id);
+      favoriteMovies = favoriteMovies.filter((movieId) => movieId !== id);
+      console.log('this.favorite', favoriteMovies);
+
+      movie.favorite = false;
+    } else {
+      console.log('setting favorite to true for id', id);
+      movie.favorite = true;
+      favoriteMovies.push(id);
+      console.log('this.favorite', favoriteMovies);
+    }
+
+    return movie;
   }
 }
 
