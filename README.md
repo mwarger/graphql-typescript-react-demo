@@ -1,6 +1,10 @@
 # graphql-typescript-react-demo
 
-This is used as the basis example for a talk/demo called Rock-Solid Component with GraphQL - slides here: https://slides.com/mathewwarger/rock-solid-components
+This is used as the basis example for a couple talks/demos...
+
+Rock-Solid Component with GraphQL - slides here: https://slides.com/mathewwarger/rock-solid-components
+
+Rethinking REST Practices with GraphQL - slides here: https://slides.com/mathewwarger/rethinking-rest-practices-with-graphql
 
 ## Usage and Codegen
 
