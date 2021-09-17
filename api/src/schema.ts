@@ -7,7 +7,7 @@ export default gql`
     overview: String!
     backdrop_path: String
     poster_path: String!
-    popularity: String
+    popularity: String @deprecated(reason: "Use favorite instead.")
     favorite: Boolean
     cast: [Credit!]
   }
