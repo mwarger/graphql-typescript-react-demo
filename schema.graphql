@@ -1,0 +1,41 @@
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+) on FIELD_DEFINITION | OBJECT | INTERFACE
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+type Credit {
+  id: ID!
+  name: String!
+  character: String!
+  profile_path: String
+}
+
+type Movie {
+  id: ID!
+  title: String!
+  overview: String!
+  backdrop_path: String
+  poster_path: String!
+  popularity: String @deprecated(reason: "Use favorite instead.")
+  favorite: Boolean
+  cast: [Credit!]
+}
+
+type Mutation {
+  toggleFavoriteMovie(movieId: ID!): Movie
+}
+
+type Query {
+  hello: String
+  nowPlaying: [Movie!]
+  popular: [Movie!]
+  movieById(id: ID!): Movie
+  cast(movieId: ID!): [Credit]
+}
+
+# The `Upload` scalar type
+scalar Upload

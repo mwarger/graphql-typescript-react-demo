@@ -1,7 +1,10 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -10,47 +13,33 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  hello?: Maybe<Scalars['String']>;
-  nowPlaying?: Maybe<Array<Movie>>;
-  popular?: Maybe<Array<Movie>>;
-  movieById?: Maybe<Movie>;
-  cast?: Maybe<Array<Maybe<Credit>>>;
-};
+export enum CacheControlScope {
+  Private = 'PRIVATE',
+  Public = 'PUBLIC'
+}
 
-
-export type QueryMovieByIdArgs = {
+export type Credit = {
+  __typename?: 'Credit';
+  character: Scalars['String'];
   id: Scalars['ID'];
-};
-
-
-export type QueryCastArgs = {
-  movieId: Scalars['ID'];
+  name: Scalars['String'];
+  profile_path?: Maybe<Scalars['String']>;
 };
 
 export type Movie = {
   __typename?: 'Movie';
-  id: Scalars['ID'];
-  title: Scalars['String'];
-  overview: Scalars['String'];
   backdrop_path?: Maybe<Scalars['String']>;
-  poster_path: Scalars['String'];
-  popularity?: Maybe<Scalars['String']>;
-  favorite?: Maybe<Scalars['Boolean']>;
   cast?: Maybe<Array<Credit>>;
-};
-
-export type Credit = {
-  __typename?: 'Credit';
+  favorite?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
-  name: Scalars['String'];
-  character: Scalars['String'];
-  profile_path?: Maybe<Scalars['String']>;
+  overview: Scalars['String'];
+  /** @deprecated Use favorite instead. */
+  popularity?: Maybe<Scalars['String']>;
+  poster_path: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type Mutation = {
@@ -63,83 +52,55 @@ export type MutationToggleFavoriteMovieArgs = {
   movieId: Scalars['ID'];
 };
 
-export enum CacheControlScope {
-  Public = 'PUBLIC',
-  Private = 'PRIVATE'
-}
+export type Query = {
+  __typename?: 'Query';
+  cast?: Maybe<Array<Maybe<Credit>>>;
+  hello?: Maybe<Scalars['String']>;
+  movieById?: Maybe<Movie>;
+  nowPlaying?: Maybe<Array<Movie>>;
+  popular?: Maybe<Array<Movie>>;
+};
 
+
+export type QueryCastArgs = {
+  movieId: Scalars['ID'];
+};
+
+
+export type QueryMovieByIdArgs = {
+  id: Scalars['ID'];
+};
 
 export type MovieByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type MovieByIdQuery = (
-  { __typename?: 'Query' }
-  & { movieById?: Maybe<(
-    { __typename?: 'Movie' }
-    & Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path' | 'backdrop_path' | 'favorite'>
-    & { cast?: Maybe<Array<(
-      { __typename?: 'Credit' }
-      & Pick<Credit, 'id' | 'name'>
-    )>> }
-  )> }
-);
+export type MovieByIdQuery = { __typename?: 'Query', movieById?: { __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null | undefined, favorite?: boolean | null | undefined, cast?: Array<{ __typename?: 'Credit', id: string, name: string }> | null | undefined } | null | undefined };
 
 export type ToggleFavoriteMutationVariables = Exact<{
   movieId: Scalars['ID'];
 }>;
 
 
-export type ToggleFavoriteMutation = (
-  { __typename?: 'Mutation' }
-  & { toggleFavoriteMovie?: Maybe<(
-    { __typename?: 'Movie' }
-    & Pick<Movie, 'id' | 'favorite'>
-  )> }
-);
+export type ToggleFavoriteMutation = { __typename?: 'Mutation', toggleFavoriteMovie?: { __typename?: 'Movie', id: string, favorite?: boolean | null | undefined } | null | undefined };
 
 export type NowPlayingQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type NowPlayingQueryQuery = (
-  { __typename?: 'Query' }
-  & { nowPlaying?: Maybe<Array<(
-    { __typename?: 'Movie' }
-    & Pick<Movie, 'id' | 'title' | 'overview'>
-  )>> }
-);
+export type NowPlayingQueryQuery = { __typename?: 'Query', nowPlaying?: Array<{ __typename?: 'Movie', id: string, title: string, overview: string }> | null | undefined };
 
-export type MovieFragment = (
-  { __typename?: 'Movie' }
-  & Pick<Movie, 'id' | 'title' | 'overview' | 'poster_path' | 'backdrop_path' | 'favorite' | 'popularity'>
-  & { cast?: Maybe<Array<(
-    { __typename?: 'Credit' }
-    & Pick<Credit, 'name'>
-  )>> }
-);
+export type MovieFragment = { __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null | undefined, favorite?: boolean | null | undefined, popularity?: string | null | undefined, cast?: Array<{ __typename?: 'Credit', name: string }> | null | undefined };
 
 export type NowPlayingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type NowPlayingQuery = (
-  { __typename?: 'Query' }
-  & { nowPlaying?: Maybe<Array<(
-    { __typename?: 'Movie' }
-    & MovieFragment
-  )>> }
-);
+export type NowPlayingQuery = { __typename?: 'Query', nowPlaying?: Array<{ __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null | undefined, favorite?: boolean | null | undefined, popularity?: string | null | undefined, cast?: Array<{ __typename?: 'Credit', name: string }> | null | undefined }> | null | undefined };
 
 export type PopularQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PopularQuery = (
-  { __typename?: 'Query' }
-  & { popular?: Maybe<Array<(
-    { __typename?: 'Movie' }
-    & MovieFragment
-  )>> }
-);
+export type PopularQuery = { __typename?: 'Query', popular?: Array<{ __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null | undefined, favorite?: boolean | null | undefined, popularity?: string | null | undefined, cast?: Array<{ __typename?: 'Credit', name: string }> | null | undefined }> | null | undefined };
 
 export const MovieFragmentDoc = gql`
     fragment Movie on Movie {
