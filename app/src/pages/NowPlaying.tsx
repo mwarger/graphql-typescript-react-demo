@@ -3,17 +3,7 @@ import React from 'react';
 import { Carousel } from '../components/slider/Carousel';
 import { MoviePoster } from '../components/slider/MoviePoster';
 import { useNowPlayingQuery } from '../generated/graphql';
-import { gql } from '@apollo/client';
 
-export const nowPlayingQuery = gql`
-  query nowPlayingQuery {
-    nowPlaying {
-      id
-      title
-      overview
-    }
-  }
-`;
 
 export const NowPlaying = () => {
   const { loading, error, data } = useNowPlayingQuery();

@@ -5,7 +5,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -76,31 +76,26 @@ export type MovieByIdQueryVariables = Exact<{
 }>;
 
 
-export type MovieByIdQuery = { __typename?: 'Query', movieById?: { __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null | undefined, favorite?: boolean | null | undefined, cast?: Array<{ __typename?: 'Credit', id: string, name: string }> | null | undefined } | null | undefined };
+export type MovieByIdQuery = { __typename?: 'Query', movieById?: { __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null, favorite?: boolean | null, cast?: Array<{ __typename?: 'Credit', id: string, name: string }> | null } | null };
 
 export type ToggleFavoriteMutationVariables = Exact<{
   movieId: Scalars['ID'];
 }>;
 
 
-export type ToggleFavoriteMutation = { __typename?: 'Mutation', toggleFavoriteMovie?: { __typename?: 'Movie', id: string, favorite?: boolean | null | undefined } | null | undefined };
-
-export type NowPlayingQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type NowPlayingQueryQuery = { __typename?: 'Query', nowPlaying?: Array<{ __typename?: 'Movie', id: string, title: string, overview: string }> | null | undefined };
-
-export type MovieFragment = { __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null | undefined, favorite?: boolean | null | undefined, popularity?: string | null | undefined, cast?: Array<{ __typename?: 'Credit', name: string }> | null | undefined };
+export type ToggleFavoriteMutation = { __typename?: 'Mutation', toggleFavoriteMovie?: { __typename?: 'Movie', id: string, favorite?: boolean | null } | null };
 
 export type NowPlayingQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type NowPlayingQuery = { __typename?: 'Query', nowPlaying?: Array<{ __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null | undefined, favorite?: boolean | null | undefined, popularity?: string | null | undefined, cast?: Array<{ __typename?: 'Credit', name: string }> | null | undefined }> | null | undefined };
+export type NowPlayingQuery = { __typename?: 'Query', nowPlaying?: Array<{ __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null, favorite?: boolean | null, popularity?: string | null, cast?: Array<{ __typename?: 'Credit', name: string }> | null }> | null };
+
+export type MovieFragment = { __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null, favorite?: boolean | null, popularity?: string | null, cast?: Array<{ __typename?: 'Credit', name: string }> | null };
 
 export type PopularQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PopularQuery = { __typename?: 'Query', popular?: Array<{ __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null | undefined, favorite?: boolean | null | undefined, popularity?: string | null | undefined, cast?: Array<{ __typename?: 'Credit', name: string }> | null | undefined }> | null | undefined };
+export type PopularQuery = { __typename?: 'Query', popular?: Array<{ __typename?: 'Movie', id: string, title: string, overview: string, poster_path: string, backdrop_path?: string | null, favorite?: boolean | null, popularity?: string | null, cast?: Array<{ __typename?: 'Credit', name: string }> | null }> | null };
 
 export const MovieFragmentDoc = gql`
     fragment Movie on Movie {
@@ -194,49 +189,22 @@ export function useToggleFavoriteMutation(baseOptions?: Apollo.MutationHookOptio
 export type ToggleFavoriteMutationHookResult = ReturnType<typeof useToggleFavoriteMutation>;
 export type ToggleFavoriteMutationResult = Apollo.MutationResult<ToggleFavoriteMutation>;
 export type ToggleFavoriteMutationOptions = Apollo.BaseMutationOptions<ToggleFavoriteMutation, ToggleFavoriteMutationVariables>;
-export const NowPlayingQueryDocument = gql`
-    query nowPlayingQuery {
+export const NowPlayingDocument = gql`
+    query nowPlaying {
   nowPlaying {
     id
     title
     overview
+    poster_path
+    backdrop_path
+    favorite
+    popularity
+    cast {
+      name
+    }
   }
 }
     `;
-
-/**
- * __useNowPlayingQueryQuery__
- *
- * To run a query within a React component, call `useNowPlayingQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useNowPlayingQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNowPlayingQueryQuery({
- *   variables: {
- *   },
- * });
- */
-export function useNowPlayingQueryQuery(baseOptions?: Apollo.QueryHookOptions<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>(NowPlayingQueryDocument, options);
-      }
-export function useNowPlayingQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>(NowPlayingQueryDocument, options);
-        }
-export type NowPlayingQueryQueryHookResult = ReturnType<typeof useNowPlayingQueryQuery>;
-export type NowPlayingQueryLazyQueryHookResult = ReturnType<typeof useNowPlayingQueryLazyQuery>;
-export type NowPlayingQueryQueryResult = Apollo.QueryResult<NowPlayingQueryQuery, NowPlayingQueryQueryVariables>;
-export const NowPlayingDocument = gql`
-    query nowPlaying {
-  nowPlaying {
-    ...Movie
-  }
-}
-    ${MovieFragmentDoc}`;
 
 /**
  * __useNowPlayingQuery__
